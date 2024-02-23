@@ -1,1 +1,0 @@
-# santosricardo.github.io
