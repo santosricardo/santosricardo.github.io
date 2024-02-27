@@ -92,7 +92,7 @@
 						<p>
 							Se você tem a vontade de iniciar a trabalhar com Engenharia de dados ou Análise de
 							dados, provavelmente já ouviu falar e/ou leu em algum momento sobre alguma dessas
-							ferramentas
+							ferramentas.
 						</p>
 					</div>
 					<div class="meta">
@@ -101,25 +101,167 @@
 								src="../../../images/avatar.jpg" alt="" /></a>
 					</div>
 				</header>
-				<span class="image featured"><img src="../../../images/airflow_duckdb_spark.png" alt="" /></span>
+				<span class="image featured"><img src="../../../images/airflow_duckdb_spark.png" alt="" />
+					aprofunde-se nos estudos (
+					<a href="https://airflow.apache.org/docs/" target="_blank">Apache Airflow</a>,
+					<a href="https://spark.apache.org/docs/latest/api/python/index.html" target="_blank">Apache
+						Spark</a>,
+					<a href="https://duckdb.org/duckdb-docs.pdf" target="_blank">Duck db</a>
+					).
+				</span>
 				<p>
 					Vamos iniciar a configuração de nosso ambiente de desenvolvimento com a instalação
 					do Airflow, Spark e DuckDB utilizando imagem em conteiners com a ferramenta Docker.
-				</p>
-				<p>
+					<br>
 					Aqui passaremos por algumas etapas de instalação e configuração das imagens no Docker,
 					caso você já esteja familiarizado com esse tipo de abordagem e/ou já tenha o ambiente
 					preparado pode seguir para a <a href="_segunda_parte.html">segunda parte</a> do nosso tutorial.
 				</p>
+				<section>
+					<p>
+						Crie um arquivo docker-compose.yml para definir as configurações do container e para
+						orquestrar vários serviços relacionados ao Spark e ao Airflow.
+						<br>
+						À seguir, analisaremos cada seção do arquivo.
+					</p>
+					<h3>O que é um arquivo Docker compose?
+						<span><a href="../tools/_docker_compose.html">Clique aqui e saiba mais..</a></span>
+					</h3>
+					<br>
+					<h4>1.Versão do Docker Compose:</h4>
+					<blockquote>
+						Defina a versão da sintaxe do Docker Compose utilizada no arquivo.
+						<pre>
+							<code>
+version: '3'
+							</code>
+						</pre>
+					</blockquote>
+
+					<h4>2.Definições comuns para o Spark:</h4>
+					<blockquote>
+						Cria uma definição comum chamada spark-common usando a diretiva x- para reutilização.
+						Essa definição é usada para o serviço spark-master e spark-worker.
+						Define a imagem do Spark, volumes para compartilhamento de arquivos, e conecta o serviço à rede
+						code-with-me.
+						<pre>
+							<code>
+x-spark-common: &spark-common
+	image: bitnami/spark:latest
+	volumes:
+		- ./jobs:/opt/bitnami/spark/jobs
+	networks:
+		- code-with-me
+							</code>
+						</pre>
+					</blockquote>
+
+					<h4>3.Definições comuns para o Airflow:</h4>
+					<blockquote>
+						Similar à definição do Spark, cria uma definição comum chamada airflow-common para reutilização.
+						Define a imagem do Airflow, especifica o contexto de construção (usando um Dockerfile),
+						carrega variáveis de ambiente de um arquivo airflow.env, mapeia volumes para compartilhamento de
+						dados
+						e conecta o serviço à rede code-with-me.
+						<pre>
+							<code>
+x-airflow-common: &airflow-common
+	image: airflow:local
+	build:
+		context: .
+		dockerfile: Dockerfile
+	env_file:
+		- airflow.env
+	volumes:
+		- ./jobs:/opt/airflow/jobs
+		- ./dags:/opt/airflow/dags
+		- ./logs:/opt/airflow/logs
+	depends_on:
+		- postgres
+	networks:
+		- code-with-me
+							</code>
+						</pre>
+					</blockquote>
+
+					<h4>4.Serviços:</h4>
+					<blockquote>
+						Define vários serviços, incluindo o spark-master, spark-worker, postgres, webserver, scheduler,
+						e init.
+						Cada serviço é configurado com base nas definições comuns de Spark ou Airflow,
+						e as dependências entre os serviços são especificadas. Portas são mapeadas para permitir acesso
+						externo a alguns serviços.
+						<pre>
+							<code>
+services:
+spark-master:
+	<<: *spark-common
+	command: bin/spark-class org.apache.spark.deploy.master.Master
+	ports:
+	- "9090:8080"
+	- "7077:7077"
+spark-worker:
+	<<: *spark-common
+	command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+	depends_on:
+	- spark-master
+	environment:
+	SPARK_MODE: worker
+	SPARK_WORKER_CORES: 2
+	SPARK_WORKER_MEMORY: 1g
+	SPARK_MASTER_URL: spark://spark-master:7077
+postgres:
+	image: postgres:15
+	environment:
+	- POSTGRES_USER=airflow
+	- POSTGRES_PASSWORD=airflow
+	- POSTGRES_DB=airflow
+	networks:
+	- code-with-me
+webserver:
+	<<: *airflow-common
+	command: webserver
+	ports:
+	- "8080:8080"
+	depends_on:
+	- scheduler
+scheduler:
+	<<: *airflow-common
+	command: airflow scheduler
+init:
+	<<: *airflow-common
+	command: "airflow db migrate"
+							</code>
+						</pre>
+					</blockquote>
+
+					<h4>5.Rede:</h4>
+					<blockquote>
+						Define uma rede chamada code-with-me para que os serviços possam se comunicar entre si.
+						<pre>
+							<code>
+networks:
+	code-with-me:
+							</code>
+						</pre>
+					</blockquote>
+				</section>
 				<footer>
 					<ul class="stats">
-						<li><a href="#">General</a></li>
-						<li><a href="#" class="icon solid fa-heart">28</a></li>
-						<li><a href="#" class="icon solid fa-comment">128</a></li>
+						<p>
+							Conclusão
+							<br>
+							Essencialmente, este arquivo Docker Compose define uma infraestrutura para executar o Spark
+							(um framework para processamento de dados em larga escala) e o Airflow (uma plataforma de
+							orquestração de fluxo de trabalho) em conjunto, conectados à mesma rede.
+							O Postgres é utilizado como banco de dados para o Airflow, e alguns serviços do Airflow
+							(webserver,
+							scheduler) são configurados para iniciar dependendo do Postgres.
+						</p>
+						<li><a href="#">Retornar para a Home</a></li>
 					</ul>
 				</footer>
 			</article>
-
 		</div>
 
 		<!-- Footer -->

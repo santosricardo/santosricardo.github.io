@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Code with me - Ricardo</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="../../../assets/css/main.css" />
+</head>
+
+<body class="single is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<h1><a href="../../../index.html">Code with me</a></h1>
+			<nav class="links">
+				<ul>
+					<li><a href="#">Data engineer</a></li>
+					<li><a href="#">Viagens</a></li>
+					<li><a href="#">Reflexões</a></li>
+				</ul>
+			</nav>
+			<nav class="main">
+				<ul>
+					<li class="search">
+						<a class="fa-search" href="#search">Procurar</a>
+						<form id="search" method="get" action="#">
+							<input type="text" name="query" placeholder="Search" />
+						</form>
+					</li>
+					<li class="menu">
+						<a class="fa-bars" href="#menu">Menu</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<!-- Menu -->
+		<section id="menu">
+
+			<!-- Search -->
+			<section>
+				<form class="search" method="get" action="#">
+					<input type="text" name="query" placeholder="Search" />
+				</form>
+			</section>
+
+			<!-- Links -->
+			<section>
+				<ul class="links">
+					<li>
+						<a href="#">
+							<h3>Data engineer</h3>
+							<p>Dicas sobre engenharia de dados</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Viagens</h3>
+							<p>Um pouco sobre os lugares que visitei</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Reflexões</h3>
+							<p>Talvez algumas reflexões do cotidiano</p>
+						</a>
+					</li>
+				</ul>
+			</section>
+
+			<!-- Actions -->
+			<section>
+				<ul class="actions stacked">
+					<li><a href="#" class="button large fit">Log In</a></li>
+				</ul>
+			</section>
+
+		</section>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Post -->
+			<article class="post">
+				<header>
+					<div class="title">
+						<h2><a href="#">O que é um arquivo Docker compose?</a></h2>
+					</div>
+					<div class="meta">
+						<time class="published" datetime="2024-02-23">Fevereiro 27, 2024</time>
+						<a href="#" class="author"><span class="name">Ricardo</span><img
+								src="../../../images/avatar.jpg" alt="" /></a>
+					</div>
+				</header>
+				<span class="image featured"><img src="../../../images/docker_compose.jpg"
+						alt="Docker compose" /></span>
+				<section>
+					<p>
+						Um arquivo Docker Compose é um arquivo YAML que define a configuração de vários serviços, redes
+						e volumes para serem executados em conjunto usando o Docker. Ele permite que você defina a
+						configuração de vários contêineres Docker, suas dependências, redes associadas e outras
+						configurações em um único arquivo para facilitar o gerenciamento e a implantação de aplicativos
+						complexos e distribuídos.
+						<br>
+						O Docker Compose é uma ferramenta que acompanha o Docker e simplifica o processo de definir,
+						configurar e orquestrar vários contêineres em um ambiente de desenvolvimento ou produção. Ao
+						utilizar um arquivo Docker Compose, você pode descrever a infraestrutura de seu aplicativo,
+						incluindo serviços, redes e volumes, de forma declarativa.
+						<br>
+						Normalmente, um arquivo Docker Compose inclui informações sobre:
+					</p>
+
+					<h4>1. Serviços:</h4>
+					<blockquote>
+						Cada serviço representa um contêiner Docker e inclui detalhes como a imagem a ser usada, portas
+						expostas, variáveis de ambiente, volumes montados, entre outros.
+					</blockquote>
+
+					<h4>2. Redes:</h4>
+					<blockquote>
+						Define redes para conectar os contêineres, permitindo a comunicação entre eles.
+					</blockquote>
+
+					<h4>3. Volumes:</h4>
+					<blockquote>
+						Especifica volumes Docker para persistência de dados ou compartilhamento de arquivos entre
+						contêineres.
+					</blockquote>
+				</section>
+				<footer>
+					<ul class="stats">
+						<p>
+							Ao executar o comando docker-compose up, o Docker Compose lê o arquivo YAML e inicia todos
+							os contêineres e configurações definidos. Isso facilita a criação de ambientes complexos com
+							várias partes interdependentes, como aplicações que envolvem bancos de dados, servidores
+							web, serviços de fila, etc.
+							<br>
+							O Docker Compose é uma ferramenta valiosa para desenvolvedores e operadores que precisam
+							gerenciar aplicativos contêinerizados com várias partes móveis e que desejam simplificar o
+							processo de desenvolvimento, teste e implantação.
+						</p>
+					</ul>
+				</footer>
+			</article>
+
+		</div>
+
+		<!-- Footer -->
+		<section id="footer">
+			<ul class="icons">
+				<li><a href="https://www.instagram.com/andradricardoo/" class="icon brands fa-instagram"><span
+							class="label">Instagram</span></a></li>
+				<li><a href="https://www.linkedin.com/in/ricardoandrads/" class="icon brands fa-linkedin"><span
+							class="label">Linkedin</span></a></li>
+				<li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+			</ul>
+			<p class="copyright"> &copy; Direitos reservados:
+				<a href="https://santosricardo.github.io/">Ricardo Andrade</a>
+			</p>
+		</section>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="../../../assets/js/jquery.min.js"></script>
+	<script src="../../../assets/js/browser.min.js"></script>
+	<script src="../../../assets/js/breakpoints.min.js"></script>
+	<script src="../../../assets/js/util.js"></script>
+	<script src="../../../assets/js/main.js"></script>
+
+</body>
+
+</html>
